@@ -1,14 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EntityFrameworkCore.Projectables.FunctionalTests.Helpers;
+﻿using EntityFrameworkCore.Projectables.FunctionalTests.Helpers;
 using Microsoft.EntityFrameworkCore;
-using VerifyXunit;
-using Xunit;
 
 namespace EntityFrameworkCore.Projectables.FunctionalTests;
 
-[UsesVerify]
 public class MethodGroupTests
 {
     public record Entity

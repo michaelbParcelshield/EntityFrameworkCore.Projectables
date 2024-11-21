@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using EntityFrameworkCore.Projectables.FunctionalTests.Helpers;
-using EntityFrameworkCore.Projectables.Services;
 using Microsoft.EntityFrameworkCore;
-using ScenarioTests;
-using VerifyXunit;
-using Xunit;
 
 #nullable disable
 
 namespace EntityFrameworkCore.Projectables.FunctionalTests
 {
-
-    [UsesVerify]
     public class ComplexModelTests
     {
         public class User

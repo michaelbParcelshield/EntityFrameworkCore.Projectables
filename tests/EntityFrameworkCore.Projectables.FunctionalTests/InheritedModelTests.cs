@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using EntityFrameworkCore.Projectables.FunctionalTests.Helpers;
-using EntityFrameworkCore.Projectables.Services;
+﻿using EntityFrameworkCore.Projectables.FunctionalTests.Helpers;
 using Microsoft.EntityFrameworkCore;
-using ScenarioTests;
-using VerifyXunit;
-using Xunit;
 
 #nullable disable
 
 namespace EntityFrameworkCore.Projectables.FunctionalTests
 {
-
-    [UsesVerify]
     public class InheritedModelTests
     {
         public interface IBaseProvider<TBase>

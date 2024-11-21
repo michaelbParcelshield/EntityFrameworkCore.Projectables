@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="Basic.Reference.Assemblies.Net80" />
+	<PackageReference Include="Basic.Reference.Assemblies.Net90" />
 	<PackageReference Include="coverlet.collector">
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

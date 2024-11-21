@@ -1,10 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using EntityFrameworkCore.Projectables.FunctionalTests.Helpers;
+﻿using EntityFrameworkCore.Projectables.FunctionalTests.Helpers;
 using Microsoft.EntityFrameworkCore;
-using VerifyXunit;
-using Xunit;
 
 namespace EntityFrameworkCore.Projectables.FunctionalTests
 {
@@ -19,7 +14,6 @@ namespace EntityFrameworkCore.Projectables.FunctionalTests
         }
     }
     
-    [UsesVerify]
     public class NameSyntaxTests
     {
         public class Entity

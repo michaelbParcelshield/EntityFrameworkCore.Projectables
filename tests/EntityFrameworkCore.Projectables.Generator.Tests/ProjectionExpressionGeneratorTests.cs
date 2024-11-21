@@ -1,45 +1,36 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using VerifyXunit;
-using Xunit;
 using Xunit.Abstractions;
 
-namespace EntityFrameworkCore.Projectables.Generator.Tests
+namespace EntityFrameworkCore.Projectables.Generator.Tests;
+
+public class ProjectionExpressionGeneratorTests
 {
-    [UsesVerify]
-    public class ProjectionExpressionGeneratorTests
+    readonly ITestOutputHelper _testOutputHelper;
+
+    public ProjectionExpressionGeneratorTests(ITestOutputHelper testOutputHelper)
     {
-        readonly ITestOutputHelper _testOutputHelper;
+        _testOutputHelper = testOutputHelper;
+    }
 
-        public ProjectionExpressionGeneratorTests(ITestOutputHelper testOutputHelper)
-        {
-            _testOutputHelper = testOutputHelper;
-        }
-
-        [Fact]
-        public void EmtpyCode_Noop()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public void EmtpyCode_Noop()
+    {
+        var compilation = CreateCompilation(@"
 class C { }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Empty(result.GeneratedTrees);
-        }
+        Assert.Empty(result.Diagnostics);
+        Assert.Empty(result.GeneratedTrees);
+    }
 
-        [Fact]
-        public Task SimpleProjectableMethod()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task SimpleProjectableMethod()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -50,18 +41,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task SimpleProjectableProperty()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task SimpleProjectableProperty()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -71,18 +62,18 @@ namespace Foo {
     }
 }
 ");
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task MinimalProjectableComputedProperty()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task MinimalProjectableComputedProperty()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -95,18 +86,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task SimpleProjectableComputedProperty()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task SimpleProjectableComputedProperty()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -119,18 +110,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task SimpleProjectableComputedInNestedClassProperty()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task SimpleProjectableComputedInNestedClassProperty()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -145,18 +136,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ProjectableComputedPropertyUsingThis()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectableComputedPropertyUsingThis()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -169,18 +160,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ProjectableComputedPropertyMethod()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectableComputedPropertyMethod()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -193,19 +184,19 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
 
-        [Fact]
-        public Task MoreComplexProjectableComputedProperty()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task MoreComplexProjectableComputedProperty()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -218,18 +209,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ArgumentlessProjectableComputedMethod()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ArgumentlessProjectableComputedMethod()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -240,18 +231,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ProjectableComputedMethodWithSingleArgument()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectableComputedMethodWithSingleArgument()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -262,18 +253,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ProjectableComputedMethodWithMultipleArguments()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectableComputedMethodWithMultipleArguments()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -284,18 +275,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ProjectablePropertyToNavigationalProperty()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectablePropertyToNavigationalProperty()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -311,18 +302,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task TypesInBodyGetsFullyQualified()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task TypesInBodyGetsFullyQualified()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -338,18 +329,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task IsOperator()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task IsOperator()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -364,18 +355,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ProjectableExtensionMethod()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectableExtensionMethod()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -389,18 +380,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ProjectableExtensionMethod2()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectableExtensionMethod2()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -412,19 +403,19 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
 
-        [Fact]
-        public Task ProjectableExtensionMethod3()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectableExtensionMethod3()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -439,18 +430,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Equal(2, result.GeneratedTrees.Length);
+        Assert.Empty(result.Diagnostics);
+        Assert.Equal(2, result.GeneratedTrees.Length);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ProjectableExtensionMethod4()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ProjectableExtensionMethod4()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -462,18 +453,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public void BlockBodiedMember_RaisesDiagnostics()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public void BlockBodiedMember_RaisesDiagnostics()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -487,15 +478,15 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Single(result.Diagnostics);
-        }
+        Assert.Single(result.Diagnostics);
+    }
 
-        [Fact]
-        public void BlockBodiedMethod_RaisesDiagnostics()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public void BlockBodiedMethod_RaisesDiagnostics()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 namespace Foo {
@@ -509,15 +500,15 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Single(result.Diagnostics);
-        }
+        Assert.Single(result.Diagnostics);
+    }
 
-        [Fact]
-        public Task NullableReferenceTypesAreBeingEliminated()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableReferenceTypesAreBeingEliminated()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -532,19 +523,19 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
 
-        [Fact]
-        public Task GenericNullableReferenceTypesAreBeingEliminated()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task GenericNullableReferenceTypesAreBeingEliminated()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -560,18 +551,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullableReferenceTypeCastOperatorGetsEliminated()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableReferenceTypeCastOperatorGetsEliminated()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -587,18 +578,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullableValueCastOperatorsPersist()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableValueCastOperatorsPersist()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -614,19 +605,19 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
 
-        [Fact]
-        public void NullableMemberBinding_WithoutSupport_IsBeingReported()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public void NullableMemberBinding_WithoutSupport_IsBeingReported()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -638,16 +629,16 @@ namespace Foo {
     }
 }
 ");
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            var diagnostic = Assert.Single(result.Diagnostics);
-            Assert.Equal("EFP0002", diagnostic.Id);
-        }
+        var diagnostic = Assert.Single(result.Diagnostics);
+        Assert.Equal("EFP0002", diagnostic.Id);
+    }
 
-        [Fact]
-        public void NullableMemberBinding_UndefinedSupport_IsBeingReported()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public void NullableMemberBinding_UndefinedSupport_IsBeingReported()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -659,17 +650,17 @@ namespace Foo {
     }
 }
 ");
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            var diagnostic = Assert.Single(result.Diagnostics);
-            Assert.Equal("EFP0002", diagnostic.Id);
-        }
+        var diagnostic = Assert.Single(result.Diagnostics);
+        Assert.Equal("EFP0002", diagnostic.Id);
+    }
 
 
-        [Fact]
-        public void MultiLevelNullableMemberBinding_UndefinedSupport_IsBeingReported()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public void MultiLevelNullableMemberBinding_UndefinedSupport_IsBeingReported()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -700,17 +691,17 @@ namespace Foo {
         }
 }
 ");
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.All(result.Diagnostics, diagnostic => {
-                Assert.Equal("EFP0002", diagnostic.Id);
-            });
-        }
+        Assert.All(result.Diagnostics, diagnostic => {
+            Assert.Equal("EFP0002", diagnostic.Id);
+        });
+    }
 
-        [Fact]
-        public Task NullableMemberBinding_WithIgnoreSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableMemberBinding_WithIgnoreSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -723,18 +714,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullableMemberBinding_WithRewriteSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableMemberBinding_WithRewriteSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -747,18 +738,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullableSimpleElementBinding_WithIgnoreSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableSimpleElementBinding_WithIgnoreSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -771,18 +762,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
-        
-        [Fact]
-        public Task StringInterpolationWithStaticCall_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
+    
+    [Fact]
+    public Task StringInterpolationWithStaticCall_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -801,18 +792,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
-        
-        [Fact]
-        public Task StringInterpolationWithParenthesis_NoParenthesisAdded()
-        {
-            var compilation = CreateCompilation(@"
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
+    
+    [Fact]
+    public Task StringInterpolationWithParenthesis_NoParenthesisAdded()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -831,18 +822,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullableSimpleElementBinding_WithRewriteSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableSimpleElementBinding_WithRewriteSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -855,18 +846,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task BooleanSimpleTernary_WithRewriteSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task BooleanSimpleTernary_WithRewriteSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -879,20 +870,20 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
 
 
-        [Fact]
-        public Task NullableElementBinding_WithIgnoreSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableElementBinding_WithIgnoreSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -905,18 +896,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-         public Task NullableElementBinding_WithRewriteSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+     public Task NullableElementBinding_WithRewriteSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using EntityFrameworkCore.Projectables;
@@ -929,18 +920,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullableElementAndMemberBinding_WithIgnoreSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableElementAndMemberBinding_WithIgnoreSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -962,18 +953,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullableElementAndMemberBinding_WithRewriteSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableElementAndMemberBinding_WithRewriteSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -995,18 +986,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullableParameters_WithRewriteSupport_IsBeingRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NullableParameters_WithRewriteSupport_IsBeingRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1028,18 +1019,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task GenericMethods_AreRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task GenericMethods_AreRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1061,18 +1052,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task GenericClassesWithContraints_AreRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task GenericClassesWithContraints_AreRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1096,18 +1087,18 @@ namespace Foo {
     }
 }
 ");
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task GenericClassesWithTypeContraints_AreRewritten()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task GenericClassesWithTypeContraints_AreRewritten()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1127,18 +1118,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            // Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        // Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task DeclarationTypeNamesAreGettingFullyQualified()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task DeclarationTypeNamesAreGettingFullyQualified()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1160,18 +1151,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task MixPrimaryConstructorAndProperties()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task MixPrimaryConstructorAndProperties()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1195,18 +1186,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task InheritedMembers()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task InheritedMembers()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1224,18 +1215,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task StaticMembers()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task StaticMembers()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1253,18 +1244,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task StaticMembers2()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task StaticMembers2()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1284,19 +1275,19 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
 
-        [Fact]
-        public Task StaticMethodWithNoParameters()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task StaticMethodWithNoParameters()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1308,18 +1299,18 @@ public static class Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task StaticMethodWithParameters()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task StaticMethodWithParameters()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1331,18 +1322,18 @@ public static class Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ConstMember()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ConstMember()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1360,18 +1351,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ConstMember2()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ConstMember2()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1391,18 +1382,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ConstMember3()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ConstMember3()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1420,18 +1411,18 @@ namespace Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task RelationalProperty()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task RelationalProperty()
+    {
+        var compilation = CreateCompilation(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1451,18 +1442,18 @@ namespace Foos {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task EnumAccessor()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task EnumAccessor()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 public enum SomeFlag
@@ -1477,18 +1468,18 @@ public static class SomeExtensions
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task Cast()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task Cast()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 namespace Projectables.Repro;
@@ -1510,18 +1501,18 @@ public static class SomeExtensions
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NavigationProperties()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task NavigationProperties()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 using System.Collections.Generic;
 
@@ -1541,18 +1532,18 @@ public class SomeEntity
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task FooOrBar()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task FooOrBar()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 using System.Collections.Generic;
 
@@ -1572,18 +1563,18 @@ public class SomeEntity
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task BaseMemberExplicitReference()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task BaseMemberExplicitReference()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 namespace Projectables.Repro;
@@ -1600,18 +1591,18 @@ class Derived : Base
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task BaseMemberImplicitReference()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task BaseMemberImplicitReference()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 namespace Projectables.Repro;
@@ -1628,18 +1619,18 @@ class Derived : Base
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task BaseMethodExplicitReference()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task BaseMethodExplicitReference()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 namespace Projectables.Repro;
@@ -1656,18 +1647,18 @@ class Derived : Base
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task BaseMethorImplicitReference()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task BaseMethorImplicitReference()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 namespace Projectables.Repro;
@@ -1684,18 +1675,18 @@ class Derived : Base
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task DefaultValuesGetRemoved()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task DefaultValuesGetRemoved()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 class Foo {
@@ -1704,18 +1695,18 @@ class Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task ParamsModifiedGetsRemoved()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task ParamsModifiedGetsRemoved()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 class Foo {
@@ -1724,18 +1715,18 @@ class Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task RequiredNamespace()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task RequiredNamespace()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 namespace One {
@@ -1752,20 +1743,20 @@ namespace One.Two {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task NullConditionalNullCoalesceTypeConversion()
-        {
-            // issue: https://github.com/koenbeuk/EntityFrameworkCore.Projectables/issues/48
+    [Fact]
+    public Task NullConditionalNullCoalesceTypeConversion()
+    {
+        // issue: https://github.com/koenbeuk/EntityFrameworkCore.Projectables/issues/48
 
-            var compilation = CreateCompilation(@"
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 class Foo {
@@ -1776,18 +1767,18 @@ class Foo {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task SwitchExpression()
-        {
-            var compilation = CreateCompilation(@"
+    [Fact]
+    public Task SwitchExpression()
+    {
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 class Foo {
@@ -1803,20 +1794,20 @@ class Foo {
     }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task GenericTypes()
-        {
-            // issue: https://github.com/koenbeuk/EntityFrameworkCore.Projectables/issues/48
+    [Fact]
+    public Task GenericTypes()
+    {
+        // issue: https://github.com/koenbeuk/EntityFrameworkCore.Projectables/issues/48
 
-            var compilation = CreateCompilation(@"
+        var compilation = CreateCompilation(@"
 using EntityFrameworkCore.Projectables;
 
 class EntiyBase<TId> {
@@ -1825,20 +1816,20 @@ class EntiyBase<TId> {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        [Fact]
-        public Task GenericTypesWithConstraints()
-        {
-            // issue: https://github.com/koenbeuk/EntityFrameworkCore.Projectables/issues/48
+    [Fact]
+    public Task GenericTypesWithConstraints()
+    {
+        // issue: https://github.com/koenbeuk/EntityFrameworkCore.Projectables/issues/48
 
-            var compilation = CreateCompilation(@"
+        var compilation = CreateCompilation(@"
 using System;
 using EntityFrameworkCore.Projectables;
 
@@ -1848,86 +1839,85 @@ class EntityBase<TId> where TId : ICloneable, new() {
 }
 ");
 
-            var result = RunGenerator(compilation);
+        var result = RunGenerator(compilation);
 
-            Assert.Empty(result.Diagnostics);
-            Assert.Single(result.GeneratedTrees);
+        Assert.Empty(result.Diagnostics);
+        Assert.Single(result.GeneratedTrees);
 
-            return Verifier.Verify(result.GeneratedTrees[0].ToString());
-        }
+        return Verifier.Verify(result.GeneratedTrees[0].ToString());
+    }
 
-        #region Helpers
+    #region Helpers
 
-        Compilation CreateCompilation(string source, bool expectedToCompile = true)
-        {
-            var references = Basic.Reference.Assemblies.Net80.References.All.ToList();
-            references.Add(MetadataReference.CreateFromFile(typeof(ProjectableAttribute).Assembly.Location));
+    Compilation CreateCompilation(string source, bool expectedToCompile = true)
+    {
+        var references = Basic.Reference.Assemblies.Net90.References.All.ToList();
+        references.Add(MetadataReference.CreateFromFile(typeof(ProjectableAttribute).Assembly.Location));
 
-            var compilation = CSharpCompilation.Create("compilation",
-                new[] { CSharpSyntaxTree.ParseText(source) },
-                references,
-                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+        var compilation = CSharpCompilation.Create("compilation",
+            new[] { CSharpSyntaxTree.ParseText(source) },
+            references,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
 #if DEBUG
 
-            if (expectedToCompile)
-            {
-                var compilationDiagnostics = compilation.GetDiagnostics();
-
-                if (!compilationDiagnostics.IsEmpty)
-                {
-                    _testOutputHelper.WriteLine($"Original compilation diagnostics produced:");
-
-                    foreach (var diagnostic in compilationDiagnostics)
-                    {
-                        _testOutputHelper.WriteLine($" > " + diagnostic.ToString());
-                    }
-
-                    if (compilationDiagnostics.Any(x => x.Severity == DiagnosticSeverity.Error))
-                    {
-                        Debug.Fail("Compilation diagnostics produced");
-                    }
-                }
-            }
-#endif
-
-            return compilation;
-        }
-
-        private GeneratorDriverRunResult RunGenerator(Compilation compilation)
+        if (expectedToCompile)
         {
-            _testOutputHelper.WriteLine("Running generator and updating compilation...");
+            var compilationDiagnostics = compilation.GetDiagnostics();
 
-            var subject = new ProjectionExpressionGenerator();
-            var driver = CSharpGeneratorDriver
-                .Create(subject)
-                .RunGenerators(compilation);
-
-            var result = driver.GetRunResult();
-
-            if (result.Diagnostics.IsEmpty)
+            if (!compilationDiagnostics.IsEmpty)
             {
-                _testOutputHelper.WriteLine("Run did not produce diagnostics");
-            }
-            else
-            {
-                _testOutputHelper.WriteLine($"Diagnostics produced:");
+                _testOutputHelper.WriteLine($"Original compilation diagnostics produced:");
 
-                foreach (var diagnostic in result.Diagnostics)
+                foreach (var diagnostic in compilationDiagnostics)
                 {
                     _testOutputHelper.WriteLine($" > " + diagnostic.ToString());
                 }
-            }
 
-            foreach (var newSyntaxTree in result.GeneratedTrees)
+                if (compilationDiagnostics.Any(x => x.Severity == DiagnosticSeverity.Error))
+                {
+                    Debug.Fail("Compilation diagnostics produced");
+                }
+            }
+        }
+#endif
+
+        return compilation;
+    }
+
+    private GeneratorDriverRunResult RunGenerator(Compilation compilation)
+    {
+        _testOutputHelper.WriteLine("Running generator and updating compilation...");
+
+        var subject = new ProjectionExpressionGenerator();
+        var driver = CSharpGeneratorDriver
+            .Create(subject)
+            .RunGenerators(compilation);
+
+        var result = driver.GetRunResult();
+
+        if (result.Diagnostics.IsEmpty)
+        {
+            _testOutputHelper.WriteLine("Run did not produce diagnostics");
+        }
+        else
+        {
+            _testOutputHelper.WriteLine($"Diagnostics produced:");
+
+            foreach (var diagnostic in result.Diagnostics)
             {
-                _testOutputHelper.WriteLine($"Produced syntax tree with path produced: {newSyntaxTree.FilePath}");
-                _testOutputHelper.WriteLine(newSyntaxTree.GetText().ToString());
+                _testOutputHelper.WriteLine($" > " + diagnostic.ToString());
             }
-
-            return driver.GetRunResult();
         }
 
-        #endregion
+        foreach (var newSyntaxTree in result.GeneratedTrees)
+        {
+            _testOutputHelper.WriteLine($"Produced syntax tree with path produced: {newSyntaxTree.FilePath}");
+            _testOutputHelper.WriteLine(newSyntaxTree.GetText().ToString());
+        }
+
+        return driver.GetRunResult();
     }
+
+    #endregion
 }

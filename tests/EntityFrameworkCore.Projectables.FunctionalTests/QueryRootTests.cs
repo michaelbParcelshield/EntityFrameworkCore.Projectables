@@ -1,39 +1,34 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Threading.Tasks;
 using EntityFrameworkCore.Projectables.FunctionalTests.Helpers;
 using Microsoft.EntityFrameworkCore;
-using VerifyXunit;
-using Xunit;
 
-namespace EntityFrameworkCore.Projectables.FunctionalTests
+namespace EntityFrameworkCore.Projectables.FunctionalTests;
+
+public class QueryRootTests
 {
-    [UsesVerify]
-    public class QueryRootTests
+    public record Entity
     {
-        public record Entity
-        {
-            public int Id { get; set; }
+        public int Id { get; set; }
 
-            [Projectable(UseMemberBody = nameof(Computed2))]
-            public int Computed1 => Id;
+        [Projectable(UseMemberBody = nameof(Computed2))]
+        public int Computed1 => Id;
 
-            private int Computed2 => Id * 2;
+        private int Computed2 => Id * 2;
 
-            [Projectable(UseMemberBody = nameof(_ComputedWithBaking))]
-            [NotMapped]
-            public int ComputedWithBacking { get; set; }
+        [Projectable(UseMemberBody = nameof(_ComputedWithBaking))]
+        [NotMapped]
+        public int ComputedWithBacking { get; set; }
 
-            private int _ComputedWithBaking => Id * 5;
-        }
+        private int _ComputedWithBaking => Id * 5;
+    }
 
-        [Fact]
-        public Task UseMemberPropertyQueryRootExpression()
-        {
-            using var dbContext = new SampleDbContext<Entity>();
+    [Fact]
+    public Task UseMemberPropertyQueryRootExpression()
+    {
+        using var dbContext = new SampleDbContext<Entity>();
 
-            var query = dbContext.Set<Entity>();
+        var query = dbContext.Set<Entity>();
 
-            return Verifier.Verify(query.ToQueryString());
-        }
+        return Verifier.Verify(query.ToQueryString());
     }
 }
