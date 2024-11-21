@@ -4,6 +4,7 @@
 	<OutputType>Exe</OutputType>
 	<Nullable>disable</Nullable>
 	<IsPackable>false</IsPackable>
+	<TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

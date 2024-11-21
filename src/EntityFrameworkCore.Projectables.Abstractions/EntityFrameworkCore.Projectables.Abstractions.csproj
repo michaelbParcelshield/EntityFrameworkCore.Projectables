@@ -3,6 +3,7 @@
   <PropertyGroup>
 	<RootNamespace>EntityFrameworkCore.Projectables</RootNamespace>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
